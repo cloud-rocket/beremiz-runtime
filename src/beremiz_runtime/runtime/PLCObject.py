@@ -76,7 +76,7 @@ def RunInMain(func):
 
 
 class PLCObject(object):
-    def __init__(self, WorkingDir, argv, statuschange, evaluator, pyruntimevars):
+    def __init__(self, WorkingDir, statuschange, evaluator, pyruntimevars):
         self.workingdir = WorkingDir  # must exits already
         self.tmpdir = os.path.join(WorkingDir, "tmp")
         if os.path.exists(self.tmpdir):

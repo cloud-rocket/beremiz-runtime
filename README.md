@@ -14,10 +14,34 @@
 
 # beremiz-runtime
 
-> Add a short description here!
+> A runtime only derivative of [Beremiz](https://github.com/etisserant/beremiz)
 
-A longer description of your project goes here...
+Beremiz is a very much welcomed SoftPLC framework, yet original Beremiz project includes IDE and Runtime as a single application. This is an attempt to restructure the original project into several standardized Python packages having less global variables and non-standard Python practices.
 
+## Runtime execution options
+
+### Python script
+
+#### Install
+```commandline
+$ pip install beremiz-runtime
+```
+
+#### Run
+```commandline
+$ br-runtime-cli
+```
+
+#### Command line help
+```commandline
+$ br-runtime-cli -h
+```
+
+
+
+### Docker container
+
+TBD
 
 <!-- pyscaffold-notes -->
 

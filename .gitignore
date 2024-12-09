@@ -54,3 +54,9 @@ MANIFEST
 .venv*/
 .conda*/
 .python-version
+
+
+runtime_00_pyext.py
+extra_files.txt
+Beremiz_service_old.py
+wx_app.py
