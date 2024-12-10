@@ -28,10 +28,10 @@ class BeremizService:
         autostart=False,
         port=3000,
         enablewebinterface=True,
-        webinterface="localhost",
+        ipaddress="localhost",
         webport=8009,
         extensions=[],
-        statuschange=[],
+        status_callback=[],
         wampconf=None,
     ):
 
@@ -39,10 +39,10 @@ class BeremizService:
         self._autostart = autostart
         self._port = port
         self._enablewebinterface = enablewebinterface
-        self._webinterface = webinterface
+        self._ipaddress = ipaddress
         self._webport = webport
         self._extensions = extensions
-        self._statuschange = statuschange
+        self._status_callback = status_callback
 
         self._workdir = workdir
         self._pskpath = pskpath
@@ -94,15 +94,15 @@ class BeremizService:
             ensurePSK(self._servicename, self._pskpath)
 
         rt.CreatePLCObjectSingleton(
-            self._workdir, self._statuschange, evaluator, pyruntimevars
+            self._workdir, self._status_callback, evaluator, pyruntimevars
         )
 
-        self._rpc_server = RPCServer(self._servicename, self._webinterface, self._port)
+        self._rpc_server = RPCServer(self._servicename, self._ipaddress, self._port)
 
         if self._enablewebinterface:
             if self._webport is not None:
                 try:
-                    website = NS.RegisterWebsite(self._webinterface, self._webport)
+                    website = NS.RegisterWebsite(self._ipaddress, self._webport)
                     pyruntimevars["website"] = website
                 except Exception:
                     LogMessageAndException(_("Nevow Web service failed. "))
