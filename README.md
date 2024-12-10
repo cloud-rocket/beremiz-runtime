@@ -41,7 +41,11 @@ $ br-runtime-cli -h
 
 ### Docker container
 
-TBD
+Building
+
+```commandline
+docker build -t beremiz-runtime:latest -f ./docker/Dockerfile .
+```
 
 <!-- pyscaffold-notes -->
 
