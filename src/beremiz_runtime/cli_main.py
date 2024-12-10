@@ -237,19 +237,6 @@ def main(args):
     setup_logging(args.loglevel)
     _logger.debug("Starting Beremiz runtime...")
 
-    statuschange = []
-
-    if args.onplcstart:
-        statuschange.append(
-            status_change_call_factory(PlcStatus.Stopped, args.onplcstart)
-        )
-    if args.onplcstop:
-        statuschange.append(status_change_call_factory(None, args.onplcstop))
-    if args.onstatuschange:
-        statuschange.append(
-            status_change_call_factory(PlcStatus.Started, args.onstatuschange)
-        )
-
     srv = BeremizService(
         servicename=args.servicename,
         workdir=args.workdir,
@@ -260,9 +247,20 @@ def main(args):
         ipaddress=args.ipaddress,
         webport=args.webport,
         extensions=args.pyextensions,
-        status_callback=statuschange,
         wampconf=args.wampconf,
     )
+
+    # Add process callbacks
+    if args.onplcstart:
+        srv.add_status_callback(
+            status_change_call_factory(PlcStatus.Stopped, args.onplcstart)
+        )
+    if args.onplcstop:
+        srv.add_status_callback(status_change_call_factory(None, args.onplcstop))
+    if args.onstatuschange:
+        srv.add_status_callback(
+            status_change_call_factory(PlcStatus.Started, args.onstatuschange)
+        )
 
     srv.init()
 

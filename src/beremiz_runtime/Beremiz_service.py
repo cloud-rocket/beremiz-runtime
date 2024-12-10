@@ -19,6 +19,7 @@ from beremiz_runtime.runtime.Stunnel import ensurePSK
 class BeremizService:
 
     _rpc_server = None
+    _status_callbacks = []
 
     def __init__(
         self,
@@ -31,7 +32,6 @@ class BeremizService:
         ipaddress="localhost",
         webport=8009,
         extensions=[],
-        status_callback=[],
         wampconf=None,
     ):
 
@@ -42,11 +42,14 @@ class BeremizService:
         self._ipaddress = ipaddress
         self._webport = webport
         self._extensions = extensions
-        self._status_callback = status_callback
 
         self._workdir = workdir
         self._pskpath = pskpath
         self._wampconf = wampconf
+
+    @property
+    def rpc_server(self):
+        return self._rpc_server
 
     def init(self):
 
@@ -94,7 +97,7 @@ class BeremizService:
             ensurePSK(self._servicename, self._pskpath)
 
         rt.CreatePLCObjectSingleton(
-            self._workdir, self._status_callback, evaluator, pyruntimevars
+            self._workdir, self._status_callbacks, evaluator, pyruntimevars
         )
 
         self._rpc_server = RPCServer(self._servicename, self._ipaddress, self._port)
@@ -115,6 +118,9 @@ class BeremizService:
                     LogMessageAndException(_("WAMP client startup failed. "))
 
         self._rpc_server_thread = None
+
+    def add_status_callback(self, callback):
+        self._status_callbacks.append(callback)
 
     def run(self):
 
